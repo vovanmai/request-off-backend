@@ -34,7 +34,7 @@ class AuthController extends Controller
                 'employees.password',
                 'employees.created_at',
             ]);
-
+sleep(5);
         if ($user) {
             if ($user->company_status === Company::STATUS_REGISTER) {
                 return response()->error('Công ty chưa được duyệt. Vui lòng liên hệ quản trị hệ thống.', [], 403);
