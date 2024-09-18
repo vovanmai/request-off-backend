@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin\Auth;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\LoginRequest;
-use App\Models\Company;
+use App\Http\Requests\Admin\LoginRequest;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller

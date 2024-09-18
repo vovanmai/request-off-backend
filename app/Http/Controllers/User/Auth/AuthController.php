@@ -6,8 +6,10 @@ namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginRequest;
+use App\Http\Requests\User\VerifyEmailRequest;
 use App\Models\Company;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,53 +17,58 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $credentials = $request->only([
-            'code',
-            'email',
-            'password',
-        ]);
+        $credentials = $request->validated();
 
 
-        $user = Admin::join('companies', 'companies.id', '=', 'employees.company_id')
-            ->where('companies.code', $credentials['code'])
-            ->where('employees.email', $credentials['email'])
+        $user = User::join('companies', 'companies.id', '=', 'users.company_id')
+            ->where('companies.id', $credentials['company_id'])
+            ->where('users.email', $credentials['email'])
             ->first([
-                'companies.status as company_status',
-                'employees.id',
-                'employees.name',
-                'employees.status',
-                'employees.email',
-                'employees.password',
-                'employees.created_at',
+                'companies.id as company_id',
+                'users.id',
+                'users.name',
+                'users.status',
+                'users.email',
+                'users.password',
+                'users.created_at',
             ]);
 
-        if ($user) {
-            if ($user->company_status === Company::STATUS_REGISTER) {
-                return response()->error('Công ty chưa được duyệt. Vui lòng liên hệ quản trị hệ thống.', [], 403);
-            }
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            $token = $user->createToken('User Access Token', ['user'])->accessToken;
 
-            if ($user->company_status === Company::STATUS_BLOCKED) {
-                return response()->error('Công ty đã bị vô hiệu . Vui lòng liên hệ quản trị hệ thống.', [], 403);
-            }
-
-
-            if ($user->status === Admin::STATUS_INACTIVE) {
-                return response()->error('Tài khoản đã bị vô hiệu . Vui lòng liên hệ quản trị viên của công .', [], 403);
-            }
-
-
-            if (Hash::check($credentials['password'], $user->password)) {
-                $tokenResult = $user->createToken(' access token', ['employee']);
-
-                return response()->success([
-                    'user' => $user,
-                    'access_token' => $tokenResult->accessToken,
-                    'token_type' => 'Bearer',
-                ]);
-            }
+            return response()->success([
+                'user' => $user,
+                'access_token' => $token,
+            ]);
         }
 
-        return response()->error('Thông tin đăng nhập không đúng.', [], 401);
+//        if ($user) {
+//            if ($user->company_status === Company::STATUS_REGISTER) {
+//                return response()->error('Công ty chưa được duyệt. Vui lòng liên hệ quản trị hệ thống.', [], 403);
+//            }
+//
+//            if ($user->company_status === Company::STATUS_BLOCKED) {
+//                return response()->error('Công ty đã bị vô hiệu . Vui lòng liên hệ quản trị hệ thống.', [], 403);
+//            }
+//
+//
+//            if ($user->status === Admin::STATUS_INACTIVE) {
+//                return response()->error('Tài khoản đã bị vô hiệu . Vui lòng liên hệ quản trị viên của công .', [], 403);
+//            }
+//
+//
+//            if (Hash::check($credentials['password'], $user->password)) {
+//                $tokenResult = $user->createToken(' access token', ['employee']);
+//
+//                return response()->success([
+//                    'user' => $user,
+//                    'access_token' => $tokenResult->accessToken,
+//                    'token_type' => 'Bearer',
+//                ]);
+//            }
+//        }
+
+        return response()->error('Thông tin đăng nhập không đúng.', [], 400);
     }
 
     public function logout()
@@ -71,5 +78,20 @@ class AuthController extends Controller
         $user->token()->revoke();
 
         return response()->success();
+    }
+
+    public function verifyEmail(VerifyEmailRequest $request)
+    {
+        $data = $request->validated();
+
+        $companies = Company::whereHas('users', function ($query) use ($data) {
+            return $query->where('email', $data['email']);
+        })->get(['id', 'name']);
+
+        if ($companies->isEmpty()) {
+            return response()->error('Thông tin đăng nhập không đúng.', [], 400);
+        }
+
+        return response()->success($companies);
     }
 }
