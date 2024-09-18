@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 
-    Route::middleware(['auth:api', 'scope:admin'])->group( function () {
+    Route::middleware(['auth:admin', 'scope:user'])->group( function () {
         Route::get('logout', [AuthController::class, 'logout']);
     });
 });

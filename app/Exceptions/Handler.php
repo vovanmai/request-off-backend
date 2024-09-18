@@ -9,6 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -64,6 +65,7 @@ class Handler extends ExceptionHandler
         return match (true) {
             $e instanceof HttpResponseException => $e->getResponse(),
             $e instanceof AuthenticationException => $this->unauthenticated($request, $e),
+            $e instanceof AccessDeniedHttpException => $this->accessDenied(),
             $e instanceof ValidationException => $this->convertValidationExceptionToResponse($e, $request),
             default => $this->renderExceptionResponse($request, $e),
         };
@@ -79,6 +81,11 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return response()->error('Phiên đăng nhập đã hết hiệu lực. Vui lòng đăng nhập lại.', [], 401);
+    }
+
+    protected function accessDenied()
+    {
+        return response()->error('Bạn không có quyền truy cập.', [], 403);
     }
 
     /**

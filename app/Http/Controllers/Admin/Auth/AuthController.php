@@ -22,17 +22,16 @@ class AuthController extends Controller
 
         $admin = Admin::where('email', $credentials['email'])->first();
 
-        // Kiểm tra thông tin đăng nhập
         if ($admin && Hash::check($credentials['password'], $admin->password)) {
-            $token = $admin->createToken('Admin Access Token')->accessToken;
+            $token = $admin->createToken('Admin Access Token', ['admin'])->accessToken;
 
-            return response()->json([
+            return response()->success([
+                'admin' => $admin,
                 'access_token' => $token,
-                'admin' => $admin
             ]);
         }
 
-        return response()->error('Thông tin đăng nhập không đúng.', [], 401);
+        return response()->error('Thông tin đăng nhập không đúng.', [], 400);
     }
 
     public function logout()
