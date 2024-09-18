@@ -14,9 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('login', [AuthController::class, 'login']);
-
-Route::middleware(['auth:employee', 'scope:employee'])->group( function () {
-    Route::get('logout', [AuthController::class, 'logout']);
-});
+require __DIR__ . '/admin/index.php';
 

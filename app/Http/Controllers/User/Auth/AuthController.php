@@ -7,7 +7,7 @@ namespace App\Http\Controllers\User\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginRequest;
 use App\Models\Company;
-use App\Models\Employee;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
 
-        $user = Employee::join('companies', 'companies.id', '=', 'employees.company_id')
+        $user = Admin::join('companies', 'companies.id', '=', 'employees.company_id')
             ->where('companies.code', $credentials['code'])
             ->where('employees.email', $credentials['email'])
             ->first([
@@ -34,7 +34,7 @@ class AuthController extends Controller
                 'employees.password',
                 'employees.created_at',
             ]);
-sleep(5);
+
         if ($user) {
             if ($user->company_status === Company::STATUS_REGISTER) {
                 return response()->error('Công ty chưa được duyệt. Vui lòng liên hệ quản trị hệ thống.', [], 403);
@@ -45,7 +45,7 @@ sleep(5);
             }
 
 
-            if ($user->status === Employee::STATUS_INACTIVE) {
+            if ($user->status === Admin::STATUS_INACTIVE) {
                 return response()->error('Tài khoản đã bị vô hiệu . Vui lòng liên hệ quản trị viên của công .', [], 403);
             }
 

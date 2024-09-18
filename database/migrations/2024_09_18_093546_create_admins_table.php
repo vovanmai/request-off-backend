@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->unsignedTinyInteger('status');
-            $table->string('address', 255)->nullable();
-            $table->string('phone', 15)->nullable();
+            $table->string('name');
+            $table->string('email');
+            $table->unsignedTinyInteger('status')->default(\App\Models\Admin::STATUS_ACTIVE);
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('admins');
     }
 };

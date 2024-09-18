@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Company;
-use App\Models\Employee;
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -21,18 +21,17 @@ class DatabaseSeeder extends Seeder
 //            'password' => "secret",
 //        ]);
 
-        $company = Company::create([
-            'code' => "dpt",
-            'name' => "DPT",
-            'address' => "DPT",
-            'status' => Company::STATUS_APPROVED,
-        ]);
-        Employee::create([
+//        $company = Company::create([
+//            'code' => "dpt",
+//            'name' => "DPT",
+//            'address' => "DPT",
+//            'status' => Company::STATUS_APPROVED,
+//        ]);
+        Admin::create([
             'name' => "Lionel vo",
             'email' => "vovanmai.dt3@gmail.com",
             'password' => "secret",
-            'company_id' => $company->id,
-            'status' => Employee::STATUS_ACTIVE,
+            'status' => Admin::STATUS_ACTIVE,
         ]);
     }
 }
