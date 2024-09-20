@@ -15,23 +15,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        User::create([
-//            'name' => "Lionel vo",
-//            'email' => "vovanmai.dt3@gmail.com",
-//            'password' => "secret",
-//        ]);
-
-//        $company = Company::create([
-//            'code' => "dpt",
-//            'name' => "DPT",
-//            'address' => "DPT",
-//            'status' => Company::STATUS_APPROVED,
-//        ]);
         Admin::create([
             'name' => "Lionel vo",
             'email' => "vovanmai.dt3@gmail.com",
             'password' => "secret",
             'status' => Admin::STATUS_ACTIVE,
+        ]);
+
+        $company = Company::create([
+            'name' => "DPT",
+            'status' => Company::STATUS_APPROVED,
+        ]);
+        User::create([
+            'company_id' => $company->id,
+            'name' => "Lionel vo",
+            'status' => User::STATUS_ACTIVE,
+            'email' => "vovanmai.dt3@gmail.com",
+            'password' => "secret",
         ]);
     }
 }

@@ -88,10 +88,6 @@ class AuthController extends Controller
             return $query->where('email', $data['email']);
         })->get(['id', 'name']);
 
-        if ($companies->isEmpty()) {
-            return response()->error('Thông tin đăng nhập không đúng.', [], 400);
-        }
-
         return response()->success($companies);
     }
 }
