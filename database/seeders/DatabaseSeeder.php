@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\Admin;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -32,12 +33,19 @@ class DatabaseSeeder extends Seeder
                 'name' => "Company {$i}",
                 'status' => Company::STATUS_APPROVED,
             ]);
+
+            $roleSupperAdmin = Role::create([
+                'name' => 'Supper admin',
+                'company_id' => $company->id,
+            ]);
+
             User::create([
                 'company_id' => $company->id,
                 'name' => "Lionel vo",
                 'status' => User::STATUS_ACTIVE,
                 'email' => "vovanmai.dt3@gmail.com",
                 'password' => "secret{$i}",
+                'role_id' => $roleSupperAdmin->id,
             ]);
         }
     }

@@ -9,6 +9,7 @@ Route::get('companies', [AuthController::class, 'getCompaniesByEmail']);
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
 
 
-Route::middleware(['auth:admin', 'scope:user'])->group( function () {
+Route::middleware(['auth:user'])->group( function () {
     Route::get('logout', [AuthController::class, 'logout']);
+    require __DIR__ . '/role.php';
 });

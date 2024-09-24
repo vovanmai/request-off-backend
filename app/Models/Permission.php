@@ -9,14 +9,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Permission extends Model
 {
 
+    const GROUP_USER = 'user';
+    const GROUP_ROLE = 'role';
+
+    const ACTION_LIST = 'list';
+    const ACTION_CREATE = 'create';
+    const ACTION_EDIT = 'edit';
+    const ACTION_DELETE = 'delete';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'role_id',
-        'code',
+        'group',
+        'action',
     ];
 
     /**
