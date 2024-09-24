@@ -5,7 +5,7 @@ use App\Http\Controllers\User\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
-Route::get('login/verify-email', [AuthController::class, 'verifyEmail']);
+Route::get('companies', [AuthController::class, 'getCompaniesByEmail']);
 Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
 
 

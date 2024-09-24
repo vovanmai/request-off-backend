@@ -38,6 +38,8 @@ class ResetPasswordNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->greeting('Xin chào!')
+            ->salutation('Xin chào!')
             ->subject('Yêu cầu khôi phục mật khẩu.')
             ->line('Bạn đang khôi phục lại mật khẩu. Vui lòng click vào nút bên dưới để tiến hành khôi phục.')
             ->action('Link', $this->resetUrl())

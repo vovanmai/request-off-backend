@@ -10,6 +10,7 @@ use App\Http\Requests\User\VerifyEmailRequest;
 use App\Models\Company;
 use App\Models\Admin;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +19,6 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
-
 
         $user = User::join('companies', 'companies.id', '=', 'users.company_id')
             ->where('companies.id', $credentials['company_id'])
@@ -80,7 +80,7 @@ class AuthController extends Controller
         return response()->success();
     }
 
-    public function verifyEmail(VerifyEmailRequest $request)
+    public function getCompaniesByEmail(VerifyEmailRequest $request)
     {
         $data = $request->validated();
 
