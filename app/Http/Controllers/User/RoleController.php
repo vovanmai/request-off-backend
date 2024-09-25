@@ -14,6 +14,8 @@ class RoleController extends Controller
         $data = $request->only([
             'name',
             'per_page',
+            'sort',
+            'order',
         ]);
 
         $result = resolve(IndexService::class)->handle($data);

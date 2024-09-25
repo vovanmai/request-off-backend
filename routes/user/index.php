@@ -11,5 +11,6 @@ Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLink'
 
 Route::middleware(['auth:user'])->group( function () {
     Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('me', [AuthController::class, 'getProfile']);
     require __DIR__ . '/role.php';
 });

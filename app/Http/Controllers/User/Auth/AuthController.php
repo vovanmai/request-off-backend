@@ -80,6 +80,19 @@ class AuthController extends Controller
         return response()->success();
     }
 
+    public function getProfile()
+    {
+        $user = auth()->user();
+
+        $user->load([
+            'role' => function ($query) {
+                $query->select(['id', 'name'])->with('permissions:group,action');
+            }
+        ]);
+
+        return response()->success($user);
+    }
+
     public function getCompaniesByEmail(VerifyEmailRequest $request)
     {
         $data = $request->validated();
