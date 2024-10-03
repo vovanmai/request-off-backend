@@ -5,4 +5,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('roles')->group(function () {
     Route::get('', [RoleController::class, 'index']);
+    Route::post('', [RoleController::class, 'store']);
 });

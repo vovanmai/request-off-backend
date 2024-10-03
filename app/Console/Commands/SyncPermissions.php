@@ -34,12 +34,14 @@ class SyncPermissions extends Command
                 Permission::ACTION_CREATE,
                 Permission::ACTION_EDIT,
                 Permission::ACTION_DELETE,
+                Permission::ACTION_DETAIL,
             ],
             Permission::GROUP_ROLE => [
                 Permission::ACTION_LIST,
                 Permission::ACTION_CREATE,
                 Permission::ACTION_EDIT,
                 Permission::ACTION_DELETE,
+                Permission::ACTION_DETAIL,
             ]
         ];
 

@@ -16,6 +16,7 @@ class Permission extends Model
     const ACTION_CREATE = 'create';
     const ACTION_EDIT = 'edit';
     const ACTION_DELETE = 'delete';
+    const ACTION_DETAIL = 'detail';
 
     /**
      * The attributes that are mass assignable.
