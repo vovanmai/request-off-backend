@@ -6,6 +6,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Validation\ValidationException;
@@ -66,6 +67,7 @@ class Handler extends ExceptionHandler
             $e instanceof HttpResponseException => $e->getResponse(),
             $e instanceof AuthenticationException => $this->unauthenticated($request, $e),
             $e instanceof AccessDeniedHttpException => $this->accessDenied(),
+            $e instanceof ThrottleRequestsException => $this->throttleRequest(),
             $e instanceof ValidationException => $this->convertValidationExceptionToResponse($e, $request),
             default => $this->renderExceptionResponse($request, $e),
         };
@@ -86,6 +88,11 @@ class Handler extends ExceptionHandler
     protected function accessDenied()
     {
         return response()->error('Bạn không có quyền truy cập.', [], 403);
+    }
+
+    protected function throttleRequest()
+    {
+        return response()->error('Bạn đã tải trang quá nhiều lần.', [], 429);
     }
 
     /**

@@ -7,21 +7,14 @@ namespace App\Http\Controllers\User\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\VerifyEmailRequest;
-use App\Jobs\TestJob;
 use App\Models\Company;
-use App\Models\Admin;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $job = new TestJob(User::where('id', 1)->first());
-        dispatch($job);
-
         $credentials = $request->validated();
 
         $user = User::join('companies', 'companies.id', '=', 'users.company_id')
