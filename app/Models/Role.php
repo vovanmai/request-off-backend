@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\CompanyIdScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Role extends Model
 {
+
+    const TYPE_DEFAULT = '1-default';
+    const TYPE_CUSTOMIZE = '2-customize';
 
     /**
      * The attributes that are mass assignable.
@@ -17,6 +20,7 @@ class Role extends Model
     protected $fillable = [
         'name',
         'company_id',
+        'type',
     ];
 
     /**
@@ -34,6 +38,14 @@ class Role extends Model
      */
     protected $casts = [
     ];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new CompanyIdScope());
+    }
 
     /**
      * Get the permissions.

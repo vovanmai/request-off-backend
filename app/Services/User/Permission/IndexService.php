@@ -23,16 +23,6 @@ class IndexService
             $query->orderBy('id', 'ASC');
         }
 
-        return $query->get(['id', 'group', 'action'])
-            ->groupBy('group')
-            ->map(function (Collection $permissions, $group) {
-                return [
-                    'group' => $group,
-                    'permissions' => $permissions->map(function ($item) {
-                        unset($item['group']);
-                        return $item;
-                    })
-                ];
-            })->values();
+        return $query->get(['id', 'group', 'action']);
     }
 }

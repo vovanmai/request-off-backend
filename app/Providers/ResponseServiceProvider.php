@@ -36,7 +36,6 @@ class ResponseServiceProvider extends ServiceProvider
     {
         Response::macro('success', function ($data = [], $message = 'Thành công', $statusCode = 200, $headers = []) {
             return response()->json([
-                'status_code' => $statusCode,
                 'message' => $message,
                 'data' => $data,
             ], $statusCode, $headers);
@@ -52,7 +51,6 @@ class ResponseServiceProvider extends ServiceProvider
             }
 
             return response()->json([
-                'status_code' => $statusCode,
                 'message' => $message,
                 'errors' => $errors,
             ], $statusCode, $headers);
@@ -63,7 +61,6 @@ class ResponseServiceProvider extends ServiceProvider
     {
         Response::macro('notFound', function ($message = 'Không tìm thấy', $errors = [], $statusCode = 404, $headers = []) {
             return response()->json([
-                'status_code' => $statusCode,
                 'message' => $message,
                 'errors' => $errors,
             ], $statusCode, $headers);

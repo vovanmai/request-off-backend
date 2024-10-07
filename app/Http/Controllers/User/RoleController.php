@@ -5,10 +5,14 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Role\StoreRequest;
+use App\Http\Requests\User\Role\UpdateRequest;
 use App\Jobs\TestJob;
 use App\Models\User;
+use App\Services\User\Role\DestroyService;
 use App\Services\User\Role\IndexService;
+use App\Services\User\Role\ShowService;
 use App\Services\User\Role\StoreService;
+use App\Services\User\Role\UpdateService;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -31,6 +35,13 @@ class RoleController extends Controller
         return response()->success($result);
     }
 
+    public function show(int $id)
+    {
+        $result = resolve(ShowService::class)->handle($id);
+
+        return response()->success($result);
+    }
+
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
@@ -38,5 +49,20 @@ class RoleController extends Controller
         $result = resolve(StoreService::class)->handle($data);
 
         return response()->success($result);
+    }
+
+    public function update(UpdateRequest $request, int $id)
+    {
+        $data = $request->validated();
+
+        resolve(UpdateService::class)->handle($id, $data);
+
+        return response()->success();
+    }
+
+    public function destroy(int $id)
+    {
+        resolve(DestroyService::class)->handle($id);
+        return response()->success();
     }
 }

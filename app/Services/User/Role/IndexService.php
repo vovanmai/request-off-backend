@@ -23,7 +23,9 @@ class IndexService
         if (filled($data['sort'] ?? null) && filled($data['order'] ?? null)) {
             $query->orderBy($data['sort'], $data['order']);
         } else {
-            $query->orderBy('id', 'DESC');
+            $query->orderBy('type', 'ASC')
+                ->orderBy('updated_at', 'DESC')
+            ->orderBy('id', 'ASC');
         }
 
         if (filled($data['created_at_from'] ?? null)) {
@@ -42,7 +44,6 @@ class IndexService
             $query->where('updated_at', '<=', Carbon::parse($data['updated_at_to'])->format('Y-m-d H:i:s'));
         }
 
-        return $query->where('company_id', auth()->user()->company_id)
-            ->paginate($data['per_page'] ?? 10);
+        return $query->paginate($data['per_page'] ?? 10);
     }
 }

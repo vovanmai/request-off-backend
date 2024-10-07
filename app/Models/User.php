@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Scopes\CompanyIdScope;
 use App\Notifications\User\ResetPasswordNotification;
 use Carbon\Carbon;
 use Illuminate\Auth\Passwords\CanResetPassword;

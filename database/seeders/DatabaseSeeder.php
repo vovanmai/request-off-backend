@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
             $roleSupperAdmin = Role::create([
                 'name' => 'Supper admin',
                 'company_id' => $company->id,
+                'type' => Role::TYPE_DEFAULT
             ]);
 
             User::create([

@@ -16,6 +16,7 @@ class StoreService
         $role = Role::create([
             'name' => $data['name'],
             'company_id' => auth()->user()->company_id,
+            'type' => Role::TYPE_CUSTOMIZE
         ]);
 
         $role->permissions()->attach($data['permission_ids']);
