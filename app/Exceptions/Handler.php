@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -68,6 +69,7 @@ class Handler extends ExceptionHandler
             $e instanceof AuthenticationException => $this->unauthenticated($request, $e),
             $e instanceof AccessDeniedHttpException => $this->accessDenied(),
             $e instanceof ThrottleRequestsException => $this->throttleRequest(),
+            $e instanceof NotFoundHttpException => $this->notFound(),
             $e instanceof ValidationException => $this->convertValidationExceptionToResponse($e, $request),
             default => $this->renderExceptionResponse($request, $e),
         };
@@ -93,6 +95,11 @@ class Handler extends ExceptionHandler
     protected function throttleRequest()
     {
         return response()->error('Bạn đã tải trang quá nhiều lần.', [], 429);
+    }
+
+    protected function notFound()
+    {
+        return response()->error('Trang không được tìm thấy.', [], 404);
     }
 
     /**
