@@ -187,7 +187,8 @@ return [
     */
 
     'attributes' => [
-        'name' => 'Tên'
+        'name' => 'Tên',
+        'email' => 'Email',
     ],
 
 ];
