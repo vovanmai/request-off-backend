@@ -4,22 +4,22 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\Role\StoreRequest;
-use App\Http\Requests\User\Role\UpdateRequest;
-use App\Services\User\Role\DestroyService;
-use App\Services\User\Role\GetAllService;
-use App\Services\User\Role\IndexService;
-use App\Services\User\Role\ShowService;
-use App\Services\User\Role\StoreService;
-use App\Services\User\Role\UpdateService;
+use App\Http\Requests\User\User\StoreRequest;
+use App\Http\Requests\User\User\UpdateRequest;
+use App\Services\User\User\DestroyService;
+use App\Services\User\User\IndexService;
+use App\Services\User\User\ShowService;
+use App\Services\User\User\StoreService;
+use App\Services\User\User\UpdateService;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     public function index(Request $request)
     {
         $data = $request->only([
             'name',
+            'email',
             'per_page',
             'sort',
             'order',
@@ -30,13 +30,6 @@ class RoleController extends Controller
         ]);
 
         $result = resolve(IndexService::class)->handle($data);
-
-        return response()->success($result);
-    }
-
-    public function getAll()
-    {
-        $result = resolve(GetAllService::class)->handle();
 
         return response()->success($result);
     }
@@ -54,7 +47,7 @@ class RoleController extends Controller
 
         $result = resolve(StoreService::class)->handle($data);
 
-        return response()->success($result);
+        return response()->success($result->id);
     }
 
     public function update(UpdateRequest $request, int $id)

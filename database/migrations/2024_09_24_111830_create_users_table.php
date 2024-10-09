@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->unsignedBigInteger('company_id')->index();
-            $table->unsignedTinyInteger('status');
+            $table->string('status', 30);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('role_id');

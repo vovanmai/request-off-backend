@@ -1,9 +1,9 @@
 <?php
 
 
-namespace App\Services\User\Role;
+namespace App\Services\User\User;
 
-use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
 
 class IndexService
@@ -14,17 +14,22 @@ class IndexService
      */
     public function handle(array $data)
     {
-        $query = Role::query();
+        $query = User::query()
+            ->with('role:id,name')
+            ->where('company_id', auth()->user()->company_id);
 
         if (filled($data['name'] ?? null)) {
             $query->where('name', 'like', "%{$data['name']}%");
         }
 
+        if (filled($data['email'] ?? null)) {
+            $query->where('email', 'like', "%{$data['email']}%");
+        }
+
         if (filled($data['sort'] ?? null) && filled($data['order'] ?? null)) {
             $query->orderBy($data['sort'], $data['order']);
         } else {
-            $query->orderBy('type', 'ASC')
-                ->orderBy('updated_at', 'DESC')
+            $query->orderBy('updated_at', 'DESC')
                 ->orderBy('id', 'ASC');
         }
 
